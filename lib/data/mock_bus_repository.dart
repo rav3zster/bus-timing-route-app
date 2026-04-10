@@ -5,6 +5,20 @@ class MockBusRepository implements BusRepository {
   MockBusRepository._();
   static final MockBusRepository instance = MockBusRepository._();
 
+  static const _serviceStartMinutes = 6 * 60; // 06:00
+  static const _serviceEndMinutes = 21 * 60 + 30; // 21:30
+
+  static const _busNamesPool = [
+    'Golden',
+    'Devi Prasad',
+    'Navadurga',
+    'Sri Durga',
+    'Mahaveer',
+    'Ganesh',
+    'Lakshmi',
+    'Sai Krupa',
+  ];
+
   // Stops
   static const _sStateBank = Stop(id: 's1', name: 'State Bank');
   static const _sCarStreet = Stop(id: 's2', name: 'Car Street');
@@ -60,179 +74,162 @@ class MockBusRepository implements BusRepository {
     _sPacchanady,
   ];
 
-  // Buses
-  static const _b13 = Bus(id: 'b13', number: '13', name: 'State Bank to Urva Stores');
-  static const _b13a = Bus(id: 'b13a', number: '13A', name: 'State Bank to Kottara');
-  static const _b13b = Bus(
-    id: 'b13b',
-    number: '13B',
-    name: 'State Bank to Kunjathbail',
-  );
-  static const _b13c = Bus(id: 'b13c', number: '13C', name: 'State Bank to Bondel');
-  static const _b13d = Bus(id: 'b13d', number: '13D', name: 'State Bank to Pacchanady');
+  static const _routeSummaries = [
+    Bus(id: 'route13', number: '13', name: 'State Bank to Urva Stores'),
+    Bus(id: 'route13a', number: '13A', name: 'State Bank to Kottara'),
+    Bus(id: 'route13b', number: '13B', name: 'State Bank to Kunjathbail'),
+    Bus(id: 'route13c', number: '13C', name: 'State Bank to Bondel'),
+    Bus(id: 'route13d', number: '13D', name: 'State Bank to Pacchanady'),
+  ];
 
-  static const _buses = [_b13, _b13a, _b13b, _b13c, _b13d];
-
-  // Routes with return trips to support reverse travel only on dedicated routes.
-  static const _routes = [
-    // 13 outbound
-    BusRoute(
-      bus: _b13,
+  static final List<_RouteTemplate> _templates = [
+    _RouteTemplate(
+      id: 'route13',
+      number: '13',
+      frequencyMinutes: 15,
       stops: [
-        RouteStop(stop: _sStateBank, departureMinutes: 420),
-        RouteStop(stop: _sCarStreet, departureMinutes: 428),
-        RouteStop(stop: _sMannagudda, departureMinutes: 436),
-        RouteStop(stop: _sLadyhill, departureMinutes: 444),
-        RouteStop(stop: _sChilimbi, departureMinutes: 452),
-        RouteStop(stop: _sUrvaStores, departureMinutes: 460),
+        _sStateBank,
+        _sCarStreet,
+        _sMannagudda,
+        _sLadyhill,
+        _sChilimbi,
+        _sUrvaStores,
       ],
+      offsets: [0, 8, 16, 24, 32, 40],
     ),
-    // 13 return
-    BusRoute(
-      bus: _b13,
+    _RouteTemplate(
+      id: 'route13a',
+      number: '13A',
+      frequencyMinutes: 15,
       stops: [
-        RouteStop(stop: _sUrvaStores, departureMinutes: 475),
-        RouteStop(stop: _sChilimbi, departureMinutes: 483),
-        RouteStop(stop: _sLadyhill, departureMinutes: 491),
-        RouteStop(stop: _sMannagudda, departureMinutes: 499),
-        RouteStop(stop: _sCarStreet, departureMinutes: 507),
-        RouteStop(stop: _sStateBank, departureMinutes: 515),
+        _sStateBank,
+        _sCarStreet,
+        _sMannagudda,
+        _sLadyhill,
+        _sChilimbi,
+        _sUrvaStores,
+        _sKottara,
       ],
+      offsets: [0, 8, 16, 24, 32, 40, 50],
     ),
-    // 13A outbound
-    BusRoute(
-      bus: _b13a,
+    _RouteTemplate(
+      id: 'route13b',
+      number: '13B',
+      frequencyMinutes: 15,
       stops: [
-        RouteStop(stop: _sStateBank, departureMinutes: 450),
-        RouteStop(stop: _sCarStreet, departureMinutes: 458),
-        RouteStop(stop: _sMannagudda, departureMinutes: 466),
-        RouteStop(stop: _sLadyhill, departureMinutes: 474),
-        RouteStop(stop: _sChilimbi, departureMinutes: 482),
-        RouteStop(stop: _sUrvaStores, departureMinutes: 490),
-        RouteStop(stop: _sKottara, departureMinutes: 500),
+        _sStateBank,
+        _sCarStreet,
+        _sLadyhill,
+        _sKulur,
+        _sPanjimogaru,
+        _sKavoor,
+        _sMarakada,
+        _sKunjathbail,
       ],
+      offsets: [0, 8, 18, 28, 38, 48, 58, 68],
     ),
-    // 13A return
-    BusRoute(
-      bus: _b13a,
+    _RouteTemplate(
+      id: 'route13c',
+      number: '13C',
+      frequencyMinutes: 15,
       stops: [
-        RouteStop(stop: _sKottara, departureMinutes: 515),
-        RouteStop(stop: _sUrvaStores, departureMinutes: 525),
-        RouteStop(stop: _sChilimbi, departureMinutes: 533),
-        RouteStop(stop: _sLadyhill, departureMinutes: 541),
-        RouteStop(stop: _sMannagudda, departureMinutes: 549),
-        RouteStop(stop: _sCarStreet, departureMinutes: 557),
-        RouteStop(stop: _sStateBank, departureMinutes: 565),
+        _sStateBank,
+        _sKsRaoRoad,
+        _sLalbagh,
+        _sLadyhill,
+        _sKuloor,
+        _sKudremukhHousing,
+        _sHudcoColony,
+        _sGovtWomensPoly,
+        _sGovtQuarters,
+        _sKavoor,
+        _sBondel,
       ],
+      offsets: [0, 5, 10, 16, 24, 32, 38, 44, 50, 58, 66],
     ),
-    // 13B outbound
-    BusRoute(
-      bus: _b13b,
+    _RouteTemplate(
+      id: 'route13d',
+      number: '13D',
+      frequencyMinutes: 120,
       stops: [
-        RouteStop(stop: _sStateBank, departureMinutes: 480),
-        RouteStop(stop: _sCarStreet, departureMinutes: 488),
-        RouteStop(stop: _sLadyhill, departureMinutes: 498),
-        RouteStop(stop: _sKulur, departureMinutes: 508),
-        RouteStop(stop: _sPanjimogaru, departureMinutes: 518),
-        RouteStop(stop: _sKavoor, departureMinutes: 528),
-        RouteStop(stop: _sMarakada, departureMinutes: 538),
-        RouteStop(stop: _sKunjathbail, departureMinutes: 548),
+        _sStateBank,
+        _sKsRaoRoad,
+        _sLalbagh,
+        _sLadyhill,
+        _sKuloor,
+        _sKudremukhHousing,
+        _sHudcoColony,
+        _sGovtWomensPoly,
+        _sGovtQuarters,
+        _sKavoor,
+        _sBondel,
+        _sPadangady,
+        _sPacchanady,
       ],
-    ),
-    // 13B return
-    BusRoute(
-      bus: _b13b,
-      stops: [
-        RouteStop(stop: _sKunjathbail, departureMinutes: 565),
-        RouteStop(stop: _sMarakada, departureMinutes: 575),
-        RouteStop(stop: _sKavoor, departureMinutes: 585),
-        RouteStop(stop: _sPanjimogaru, departureMinutes: 595),
-        RouteStop(stop: _sKulur, departureMinutes: 605),
-        RouteStop(stop: _sLadyhill, departureMinutes: 615),
-        RouteStop(stop: _sCarStreet, departureMinutes: 625),
-        RouteStop(stop: _sStateBank, departureMinutes: 633),
-      ],
-    ),
-    // 13C outbound
-    BusRoute(
-      bus: _b13c,
-      stops: [
-        RouteStop(stop: _sStateBank, departureMinutes: 510),
-        RouteStop(stop: _sKsRaoRoad, departureMinutes: 518),
-        RouteStop(stop: _sLalbagh, departureMinutes: 526),
-        RouteStop(stop: _sLadyhill, departureMinutes: 536),
-        RouteStop(stop: _sKuloor, departureMinutes: 546),
-        RouteStop(stop: _sKudremukhHousing, departureMinutes: 556),
-        RouteStop(stop: _sHudcoColony, departureMinutes: 564),
-        RouteStop(stop: _sGovtWomensPoly, departureMinutes: 572),
-        RouteStop(stop: _sGovtQuarters, departureMinutes: 580),
-        RouteStop(stop: _sKavoor, departureMinutes: 590),
-        RouteStop(stop: _sBondel, departureMinutes: 600),
-      ],
-    ),
-    // 13C return
-    BusRoute(
-      bus: _b13c,
-      stops: [
-        RouteStop(stop: _sBondel, departureMinutes: 620),
-        RouteStop(stop: _sKavoor, departureMinutes: 630),
-        RouteStop(stop: _sGovtQuarters, departureMinutes: 640),
-        RouteStop(stop: _sGovtWomensPoly, departureMinutes: 648),
-        RouteStop(stop: _sHudcoColony, departureMinutes: 656),
-        RouteStop(stop: _sKudremukhHousing, departureMinutes: 664),
-        RouteStop(stop: _sKuloor, departureMinutes: 674),
-        RouteStop(stop: _sLadyhill, departureMinutes: 684),
-        RouteStop(stop: _sLalbagh, departureMinutes: 694),
-        RouteStop(stop: _sKsRaoRoad, departureMinutes: 702),
-        RouteStop(stop: _sStateBank, departureMinutes: 710),
-      ],
-    ),
-    // 13D outbound
-    BusRoute(
-      bus: _b13d,
-      stops: [
-        RouteStop(stop: _sStateBank, departureMinutes: 540),
-        RouteStop(stop: _sKsRaoRoad, departureMinutes: 548),
-        RouteStop(stop: _sLalbagh, departureMinutes: 556),
-        RouteStop(stop: _sLadyhill, departureMinutes: 566),
-        RouteStop(stop: _sKuloor, departureMinutes: 576),
-        RouteStop(stop: _sKudremukhHousing, departureMinutes: 586),
-        RouteStop(stop: _sHudcoColony, departureMinutes: 594),
-        RouteStop(stop: _sGovtWomensPoly, departureMinutes: 602),
-        RouteStop(stop: _sGovtQuarters, departureMinutes: 610),
-        RouteStop(stop: _sKavoor, departureMinutes: 620),
-        RouteStop(stop: _sBondel, departureMinutes: 630),
-        RouteStop(stop: _sPadangady, departureMinutes: 642),
-        RouteStop(stop: _sPacchanady, departureMinutes: 654),
-      ],
-    ),
-    // 13D return
-    BusRoute(
-      bus: _b13d,
-      stops: [
-        RouteStop(stop: _sPacchanady, departureMinutes: 675),
-        RouteStop(stop: _sPadangady, departureMinutes: 687),
-        RouteStop(stop: _sBondel, departureMinutes: 699),
-        RouteStop(stop: _sKavoor, departureMinutes: 709),
-        RouteStop(stop: _sGovtQuarters, departureMinutes: 719),
-        RouteStop(stop: _sGovtWomensPoly, departureMinutes: 727),
-        RouteStop(stop: _sHudcoColony, departureMinutes: 735),
-        RouteStop(stop: _sKudremukhHousing, departureMinutes: 743),
-        RouteStop(stop: _sKuloor, departureMinutes: 753),
-        RouteStop(stop: _sLadyhill, departureMinutes: 763),
-        RouteStop(stop: _sLalbagh, departureMinutes: 773),
-        RouteStop(stop: _sKsRaoRoad, departureMinutes: 781),
-        RouteStop(stop: _sStateBank, departureMinutes: 789),
-      ],
+      offsets: [0, 5, 10, 16, 24, 32, 38, 44, 50, 58, 66, 74, 82],
     ),
   ];
 
+  late final List<BusRoute> _routes = _generateRoutes();
+
+  List<BusRoute> _generateRoutes() {
+    final generated = <BusRoute>[];
+
+    for (
+      var templateIndex = 0;
+      templateIndex < _templates.length;
+      templateIndex++
+    ) {
+      final template = _templates[templateIndex];
+      var tripStart = _serviceStartMinutes;
+      var tripIndex = 0;
+
+      while (tripStart <= _serviceEndMinutes) {
+        final busName =
+            _busNamesPool[(templateIndex + tripIndex) % _busNamesPool.length];
+
+        generated.add(
+          BusRoute(
+            bus: Bus(id: template.id, number: template.number, name: busName),
+            stops: List.generate(template.stops.length, (i) {
+              return RouteStop(
+                stop: template.stops[i],
+                departureMinutes: tripStart + template.offsets[i],
+              );
+            }),
+          ),
+        );
+
+        tripStart += template.frequencyMinutes;
+        tripIndex++;
+      }
+    }
+
+    return generated;
+  }
+
   @override
-  List<Bus> getAllBuses() => List.unmodifiable(_buses);
+  List<Bus> getAllBuses() => List.unmodifiable(_routeSummaries);
 
   @override
   List<Stop> getAllStops() => List.unmodifiable(_stops);
 
   @override
   List<BusRoute> getAllRoutes() => List.unmodifiable(_routes);
+}
+
+class _RouteTemplate {
+  final String id;
+  final String number;
+  final int frequencyMinutes;
+  final List<Stop> stops;
+  final List<int> offsets;
+
+  const _RouteTemplate({
+    required this.id,
+    required this.number,
+    required this.frequencyMinutes,
+    required this.stops,
+    required this.offsets,
+  });
 }

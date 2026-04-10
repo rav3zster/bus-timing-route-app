@@ -20,6 +20,9 @@ class BusCard extends StatelessWidget {
     final departureTime = timeCalculator.formatDepartureTime(
       result.departureMinutes,
     );
+    final arrivalTime = timeCalculator.formatDepartureTime(
+      result.arrivalMinutes ?? result.departureMinutes,
+    );
     final timeRemaining = timeCalculator.formatDuration(
       result.timeUntilDeparture,
     );
@@ -103,10 +106,10 @@ class BusCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      departureTime,
+                      '$departureTime -> $arrivalTime',
                       style: const TextStyle(
                         fontFamily: 'monospace',
-                        fontSize: 20,
+                        fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                         letterSpacing: 1,

@@ -25,6 +25,8 @@ class Bus {
 
   const Bus({required this.id, required this.number, required this.name});
 
+  String get displayName => '${number.trim()} ${name.trim()}';
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) || other is Bus && other.id == id;
@@ -55,12 +57,14 @@ class BusRoute {
 class BusResult {
   final Bus bus;
   final int departureMinutes;
+  final int? arrivalMinutes;
   final Duration timeUntilDeparture;
   final List<Stop> routePreview;
 
   const BusResult({
     required this.bus,
     required this.departureMinutes,
+    this.arrivalMinutes,
     required this.timeUntilDeparture,
     required this.routePreview,
   });

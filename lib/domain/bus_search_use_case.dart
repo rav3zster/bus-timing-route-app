@@ -32,6 +32,7 @@ class BusSearchUseCase {
         BusResult(
           bus: route.bus,
           departureMinutes: rs.departureMinutes,
+          arrivalMinutes: route.stops.last.departureMinutes,
           timeUntilDeparture: timeCalculator.timeUntil(
             rs.departureMinutes,
             currentTime,
@@ -65,6 +66,7 @@ class BusSearchUseCase {
       if (sourceIndex >= destinationIndex) continue;
 
       final sourceRouteStop = stops[sourceIndex];
+      final destinationRouteStop = stops[destinationIndex];
       final departureMinutes = sourceRouteStop.departureMinutes;
 
       if (departureMinutes < currentMinutes) continue;
@@ -78,6 +80,7 @@ class BusSearchUseCase {
         BusResult(
           bus: route.bus,
           departureMinutes: departureMinutes,
+          arrivalMinutes: destinationRouteStop.departureMinutes,
           timeUntilDeparture: timeCalculator.timeUntil(
             departureMinutes,
             currentTime,
