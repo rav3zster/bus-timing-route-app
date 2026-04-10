@@ -6,237 +6,223 @@ class MockBusRepository implements BusRepository {
   static final MockBusRepository instance = MockBusRepository._();
 
   // Stops
-  static const _s1 = Stop(id: 's1', name: 'Central Station');
-  static const _s2 = Stop(id: 's2', name: 'Airport');
-  static const _s3 = Stop(id: 's3', name: 'University');
-  static const _s4 = Stop(id: 's4', name: 'Market Square');
-  static const _s5 = Stop(id: 's5', name: 'Hospital');
-  static const _s6 = Stop(id: 's6', name: 'Tech Park');
-  static const _s7 = Stop(id: 's7', name: 'Old Town');
-  static const _s8 = Stop(id: 's8', name: 'Beach Road');
+  static const _sStateBank = Stop(id: 's1', name: 'State Bank');
+  static const _sCarStreet = Stop(id: 's2', name: 'Car Street');
+  static const _sMannagudda = Stop(id: 's3', name: 'Mannagudda');
+  static const _sLadyhill = Stop(id: 's4', name: 'Ladyhill');
+  static const _sChilimbi = Stop(id: 's5', name: 'Chilimbi');
+  static const _sUrvaStores = Stop(id: 's6', name: 'Urva Stores');
+  static const _sKottara = Stop(id: 's7', name: 'Kottara');
+  static const _sKulur = Stop(id: 's8', name: 'Kulur');
+  static const _sPanjimogaru = Stop(id: 's9', name: 'Panjimogaru');
+  static const _sKavoor = Stop(id: 's10', name: 'Kavoor');
+  static const _sMarakada = Stop(id: 's11', name: 'Marakada');
+  static const _sKunjathbail = Stop(id: 's12', name: 'Kunjathbail');
+  static const _sKsRaoRoad = Stop(id: 's13', name: 'K.S. Rao Road');
+  static const _sLalbagh = Stop(id: 's14', name: 'Lalbagh');
+  static const _sKuloor = Stop(id: 's15', name: 'Kuloor');
+  static const _sKudremukhHousing = Stop(
+    id: 's16',
+    name: 'Kudremukh Housing Colony',
+  );
+  static const _sHudcoColony = Stop(id: 's17', name: 'Hudco Colony');
+  static const _sGovtWomensPoly = Stop(
+    id: 's18',
+    name: 'Govt Womens Polytechnic',
+  );
+  static const _sGovtQuarters = Stop(id: 's19', name: 'Govt Quarters');
+  static const _sBondel = Stop(id: 's20', name: 'Bondel');
+  static const _sPadangady = Stop(id: 's21', name: 'Padangady');
+  static const _sPacchanady = Stop(id: 's22', name: 'Pacchanady');
 
-  static const _stops = [_s1, _s2, _s3, _s4, _s5, _s6, _s7, _s8];
+  static const _stops = [
+    _sStateBank,
+    _sCarStreet,
+    _sMannagudda,
+    _sLadyhill,
+    _sChilimbi,
+    _sUrvaStores,
+    _sKottara,
+    _sKulur,
+    _sPanjimogaru,
+    _sKavoor,
+    _sMarakada,
+    _sKunjathbail,
+    _sKsRaoRoad,
+    _sLalbagh,
+    _sKuloor,
+    _sKudremukhHousing,
+    _sHudcoColony,
+    _sGovtWomensPoly,
+    _sGovtQuarters,
+    _sBondel,
+    _sPadangady,
+    _sPacchanady,
+  ];
 
   // Buses
-  static const _b1 = Bus(id: 'b1', number: '42A', name: 'City Express');
-  static const _b2 = Bus(id: 'b2', number: '17B', name: 'Airport Shuttle');
-  static const _b3 = Bus(id: 'b3', number: '5C', name: 'University Line');
-  static const _b4 = Bus(id: 'b4', number: '88D', name: 'Coastal Runner');
-  static const _b5 = Bus(id: 'b5', number: '33E', name: 'Metro Link');
-  static const _b6 = Bus(id: 'b6', number: '11F', name: 'Night Connector');
+  static const _b13 = Bus(id: 'b13', number: '13', name: 'State Bank to Urva Stores');
+  static const _b13a = Bus(id: 'b13a', number: '13A', name: 'State Bank to Kottara');
+  static const _b13b = Bus(
+    id: 'b13b',
+    number: '13B',
+    name: 'State Bank to Kunjathbail',
+  );
+  static const _b13c = Bus(id: 'b13c', number: '13C', name: 'State Bank to Bondel');
+  static const _b13d = Bus(id: 'b13d', number: '13D', name: 'State Bank to Pacchanady');
 
-  static const _buses = [_b1, _b2, _b3, _b4, _b5, _b6];
+  static const _buses = [_b13, _b13a, _b13b, _b13c, _b13d];
 
-  // Routes
+  // Routes with return trips to support reverse travel only on dedicated routes.
   static const _routes = [
-    // Bus 42A - City Express (outbound run 1)
+    // 13 outbound
     BusRoute(
-      bus: _b1,
+      bus: _b13,
       stops: [
-        RouteStop(stop: _s1, departureMinutes: 480), // Central Station 8:00
-        RouteStop(stop: _s4, departureMinutes: 495), // Market Square 8:15
-        RouteStop(stop: _s3, departureMinutes: 515), // University 8:35
-        RouteStop(stop: _s6, departureMinutes: 540), // Tech Park 9:00
-        RouteStop(stop: _s5, departureMinutes: 560), // Hospital 9:20
+        RouteStop(stop: _sStateBank, departureMinutes: 420),
+        RouteStop(stop: _sCarStreet, departureMinutes: 428),
+        RouteStop(stop: _sMannagudda, departureMinutes: 436),
+        RouteStop(stop: _sLadyhill, departureMinutes: 444),
+        RouteStop(stop: _sChilimbi, departureMinutes: 452),
+        RouteStop(stop: _sUrvaStores, departureMinutes: 460),
       ],
     ),
-    // Bus 42A - City Express (inbound run 1 return)
+    // 13 return
     BusRoute(
-      bus: _b1,
+      bus: _b13,
       stops: [
-        RouteStop(stop: _s5, departureMinutes: 580), // Hospital 9:40
-        RouteStop(stop: _s6, departureMinutes: 600), // Tech Park 10:00
-        RouteStop(stop: _s3, departureMinutes: 620), // University 10:20
-        RouteStop(stop: _s4, departureMinutes: 635), // Market Square 10:35
-        RouteStop(stop: _s1, departureMinutes: 650), // Central Station 10:50
+        RouteStop(stop: _sUrvaStores, departureMinutes: 475),
+        RouteStop(stop: _sChilimbi, departureMinutes: 483),
+        RouteStop(stop: _sLadyhill, departureMinutes: 491),
+        RouteStop(stop: _sMannagudda, departureMinutes: 499),
+        RouteStop(stop: _sCarStreet, departureMinutes: 507),
+        RouteStop(stop: _sStateBank, departureMinutes: 515),
       ],
     ),
-    // Bus 42A - City Express (outbound run 2)
+    // 13A outbound
     BusRoute(
-      bus: _b1,
+      bus: _b13a,
       stops: [
-        RouteStop(stop: _s1, departureMinutes: 600), // Central Station 10:00
-        RouteStop(stop: _s4, departureMinutes: 615), // Market Square 10:15
-        RouteStop(stop: _s3, departureMinutes: 635), // University 10:35
-        RouteStop(stop: _s6, departureMinutes: 660), // Tech Park 11:00
-        RouteStop(stop: _s5, departureMinutes: 680), // Hospital 11:20
+        RouteStop(stop: _sStateBank, departureMinutes: 450),
+        RouteStop(stop: _sCarStreet, departureMinutes: 458),
+        RouteStop(stop: _sMannagudda, departureMinutes: 466),
+        RouteStop(stop: _sLadyhill, departureMinutes: 474),
+        RouteStop(stop: _sChilimbi, departureMinutes: 482),
+        RouteStop(stop: _sUrvaStores, departureMinutes: 490),
+        RouteStop(stop: _sKottara, departureMinutes: 500),
       ],
     ),
-    // Bus 42A - City Express (inbound run 2 return)
+    // 13A return
     BusRoute(
-      bus: _b1,
+      bus: _b13a,
       stops: [
-        RouteStop(stop: _s5, departureMinutes: 700), // Hospital 11:40
-        RouteStop(stop: _s6, departureMinutes: 720), // Tech Park 12:00
-        RouteStop(stop: _s3, departureMinutes: 740), // University 12:20
-        RouteStop(stop: _s4, departureMinutes: 755), // Market Square 12:35
-        RouteStop(stop: _s1, departureMinutes: 770), // Central Station 12:50
+        RouteStop(stop: _sKottara, departureMinutes: 515),
+        RouteStop(stop: _sUrvaStores, departureMinutes: 525),
+        RouteStop(stop: _sChilimbi, departureMinutes: 533),
+        RouteStop(stop: _sLadyhill, departureMinutes: 541),
+        RouteStop(stop: _sMannagudda, departureMinutes: 549),
+        RouteStop(stop: _sCarStreet, departureMinutes: 557),
+        RouteStop(stop: _sStateBank, departureMinutes: 565),
       ],
     ),
-    // Bus 17B - Airport Shuttle (outbound run 1)
+    // 13B outbound
     BusRoute(
-      bus: _b2,
+      bus: _b13b,
       stops: [
-        RouteStop(stop: _s2, departureMinutes: 450), // Airport 7:30
-        RouteStop(stop: _s1, departureMinutes: 480), // Central Station 8:00
-        RouteStop(stop: _s7, departureMinutes: 510), // Old Town 8:30
-        RouteStop(stop: _s8, departureMinutes: 540), // Beach Road 9:00
+        RouteStop(stop: _sStateBank, departureMinutes: 480),
+        RouteStop(stop: _sCarStreet, departureMinutes: 488),
+        RouteStop(stop: _sLadyhill, departureMinutes: 498),
+        RouteStop(stop: _sKulur, departureMinutes: 508),
+        RouteStop(stop: _sPanjimogaru, departureMinutes: 518),
+        RouteStop(stop: _sKavoor, departureMinutes: 528),
+        RouteStop(stop: _sMarakada, departureMinutes: 538),
+        RouteStop(stop: _sKunjathbail, departureMinutes: 548),
       ],
     ),
-    // Bus 17B - Airport Shuttle (inbound run 1 return)
+    // 13B return
     BusRoute(
-      bus: _b2,
+      bus: _b13b,
       stops: [
-        RouteStop(stop: _s8, departureMinutes: 555), // Beach Road 9:15
-        RouteStop(stop: _s7, departureMinutes: 585), // Old Town 9:45
-        RouteStop(stop: _s1, departureMinutes: 615), // Central Station 10:15
-        RouteStop(stop: _s2, departureMinutes: 645), // Airport 10:45
+        RouteStop(stop: _sKunjathbail, departureMinutes: 565),
+        RouteStop(stop: _sMarakada, departureMinutes: 575),
+        RouteStop(stop: _sKavoor, departureMinutes: 585),
+        RouteStop(stop: _sPanjimogaru, departureMinutes: 595),
+        RouteStop(stop: _sKulur, departureMinutes: 605),
+        RouteStop(stop: _sLadyhill, departureMinutes: 615),
+        RouteStop(stop: _sCarStreet, departureMinutes: 625),
+        RouteStop(stop: _sStateBank, departureMinutes: 633),
       ],
     ),
-    // Bus 17B - Airport Shuttle (outbound run 2)
+    // 13C outbound
     BusRoute(
-      bus: _b2,
+      bus: _b13c,
       stops: [
-        RouteStop(stop: _s2, departureMinutes: 570), // Airport 9:30
-        RouteStop(stop: _s1, departureMinutes: 600), // Central Station 10:00
-        RouteStop(stop: _s7, departureMinutes: 630), // Old Town 10:30
-        RouteStop(stop: _s8, departureMinutes: 660), // Beach Road 11:00
+        RouteStop(stop: _sStateBank, departureMinutes: 510),
+        RouteStop(stop: _sKsRaoRoad, departureMinutes: 518),
+        RouteStop(stop: _sLalbagh, departureMinutes: 526),
+        RouteStop(stop: _sLadyhill, departureMinutes: 536),
+        RouteStop(stop: _sKuloor, departureMinutes: 546),
+        RouteStop(stop: _sKudremukhHousing, departureMinutes: 556),
+        RouteStop(stop: _sHudcoColony, departureMinutes: 564),
+        RouteStop(stop: _sGovtWomensPoly, departureMinutes: 572),
+        RouteStop(stop: _sGovtQuarters, departureMinutes: 580),
+        RouteStop(stop: _sKavoor, departureMinutes: 590),
+        RouteStop(stop: _sBondel, departureMinutes: 600),
       ],
     ),
-    // Bus 17B - Airport Shuttle (inbound run 2 return)
+    // 13C return
     BusRoute(
-      bus: _b2,
+      bus: _b13c,
       stops: [
-        RouteStop(stop: _s8, departureMinutes: 675), // Beach Road 11:15
-        RouteStop(stop: _s7, departureMinutes: 705), // Old Town 11:45
-        RouteStop(stop: _s1, departureMinutes: 735), // Central Station 12:15
-        RouteStop(stop: _s2, departureMinutes: 765), // Airport 12:45
+        RouteStop(stop: _sBondel, departureMinutes: 620),
+        RouteStop(stop: _sKavoor, departureMinutes: 630),
+        RouteStop(stop: _sGovtQuarters, departureMinutes: 640),
+        RouteStop(stop: _sGovtWomensPoly, departureMinutes: 648),
+        RouteStop(stop: _sHudcoColony, departureMinutes: 656),
+        RouteStop(stop: _sKudremukhHousing, departureMinutes: 664),
+        RouteStop(stop: _sKuloor, departureMinutes: 674),
+        RouteStop(stop: _sLadyhill, departureMinutes: 684),
+        RouteStop(stop: _sLalbagh, departureMinutes: 694),
+        RouteStop(stop: _sKsRaoRoad, departureMinutes: 702),
+        RouteStop(stop: _sStateBank, departureMinutes: 710),
       ],
     ),
-    // Bus 5C - University Line (outbound run 1)
+    // 13D outbound
     BusRoute(
-      bus: _b3,
+      bus: _b13d,
       stops: [
-        RouteStop(stop: _s3, departureMinutes: 490), // University 8:10
-        RouteStop(stop: _s4, departureMinutes: 510), // Market Square 8:30
-        RouteStop(stop: _s1, departureMinutes: 535), // Central Station 8:55
-        RouteStop(stop: _s5, departureMinutes: 555), // Hospital 9:15
+        RouteStop(stop: _sStateBank, departureMinutes: 540),
+        RouteStop(stop: _sKsRaoRoad, departureMinutes: 548),
+        RouteStop(stop: _sLalbagh, departureMinutes: 556),
+        RouteStop(stop: _sLadyhill, departureMinutes: 566),
+        RouteStop(stop: _sKuloor, departureMinutes: 576),
+        RouteStop(stop: _sKudremukhHousing, departureMinutes: 586),
+        RouteStop(stop: _sHudcoColony, departureMinutes: 594),
+        RouteStop(stop: _sGovtWomensPoly, departureMinutes: 602),
+        RouteStop(stop: _sGovtQuarters, departureMinutes: 610),
+        RouteStop(stop: _sKavoor, departureMinutes: 620),
+        RouteStop(stop: _sBondel, departureMinutes: 630),
+        RouteStop(stop: _sPadangady, departureMinutes: 642),
+        RouteStop(stop: _sPacchanady, departureMinutes: 654),
       ],
     ),
-    // Bus 5C - University Line (inbound run 1 return)
+    // 13D return
     BusRoute(
-      bus: _b3,
+      bus: _b13d,
       stops: [
-        RouteStop(stop: _s5, departureMinutes: 570), // Hospital 9:30
-        RouteStop(stop: _s1, departureMinutes: 590), // Central Station 9:50
-        RouteStop(stop: _s4, departureMinutes: 615), // Market Square 10:15
-        RouteStop(stop: _s3, departureMinutes: 635), // University 10:35
-      ],
-    ),
-    // Bus 5C - University Line (outbound run 2)
-    BusRoute(
-      bus: _b3,
-      stops: [
-        RouteStop(stop: _s3, departureMinutes: 610), // University 10:10
-        RouteStop(stop: _s4, departureMinutes: 630), // Market Square 10:30
-        RouteStop(stop: _s1, departureMinutes: 655), // Central Station 10:55
-        RouteStop(stop: _s5, departureMinutes: 675), // Hospital 11:15
-      ],
-    ),
-    // Bus 5C - University Line (inbound run 2 return)
-    BusRoute(
-      bus: _b3,
-      stops: [
-        RouteStop(stop: _s5, departureMinutes: 690), // Hospital 11:30
-        RouteStop(stop: _s1, departureMinutes: 710), // Central Station 11:50
-        RouteStop(stop: _s4, departureMinutes: 735), // Market Square 12:15
-        RouteStop(stop: _s3, departureMinutes: 755), // University 12:35
-      ],
-    ),
-    // Bus 88D - Coastal Runner (outbound run 1)
-    BusRoute(
-      bus: _b4,
-      stops: [
-        RouteStop(stop: _s8, departureMinutes: 500), // Beach Road 8:20
-        RouteStop(stop: _s7, departureMinutes: 520), // Old Town 8:40
-        RouteStop(stop: _s4, departureMinutes: 545), // Market Square 9:05
-        RouteStop(stop: _s1, departureMinutes: 570), // Central Station 9:30
-        RouteStop(stop: _s2, departureMinutes: 600), // Airport 10:00
-      ],
-    ),
-    // Bus 88D - Coastal Runner (inbound run 1 return)
-    BusRoute(
-      bus: _b4,
-      stops: [
-        RouteStop(stop: _s2, departureMinutes: 620), // Airport 10:20
-        RouteStop(stop: _s1, departureMinutes: 650), // Central Station 10:50
-        RouteStop(stop: _s4, departureMinutes: 675), // Market Square 11:15
-        RouteStop(stop: _s7, departureMinutes: 700), // Old Town 11:40
-        RouteStop(stop: _s8, departureMinutes: 720), // Beach Road 12:00
-      ],
-    ),
-    // Bus 33E - Metro Link (outbound run 1)
-    BusRoute(
-      bus: _b5,
-      stops: [
-        RouteStop(stop: _s6, departureMinutes: 480), // Tech Park 8:00
-        RouteStop(stop: _s3, departureMinutes: 500), // University 8:20
-        RouteStop(stop: _s4, departureMinutes: 520), // Market Square 8:40
-        RouteStop(stop: _s7, departureMinutes: 545), // Old Town 9:05
-        RouteStop(stop: _s8, departureMinutes: 570), // Beach Road 9:30
-      ],
-    ),
-    // Bus 33E - Metro Link (inbound run 1 return)
-    BusRoute(
-      bus: _b5,
-      stops: [
-        RouteStop(stop: _s8, departureMinutes: 590), // Beach Road 9:50
-        RouteStop(stop: _s7, departureMinutes: 615), // Old Town 10:15
-        RouteStop(stop: _s4, departureMinutes: 640), // Market Square 10:40
-        RouteStop(stop: _s3, departureMinutes: 660), // University 11:00
-        RouteStop(stop: _s6, departureMinutes: 680), // Tech Park 11:20
-      ],
-    ),
-    // Bus 33E - Metro Link (outbound run 2)
-    BusRoute(
-      bus: _b5,
-      stops: [
-        RouteStop(stop: _s6, departureMinutes: 600), // Tech Park 10:00
-        RouteStop(stop: _s3, departureMinutes: 620), // University 10:20
-        RouteStop(stop: _s4, departureMinutes: 640), // Market Square 10:40
-        RouteStop(stop: _s7, departureMinutes: 665), // Old Town 11:05
-        RouteStop(stop: _s8, departureMinutes: 690), // Beach Road 11:30
-      ],
-    ),
-    // Bus 33E - Metro Link (inbound run 2 return)
-    BusRoute(
-      bus: _b5,
-      stops: [
-        RouteStop(stop: _s8, departureMinutes: 710), // Beach Road 11:50
-        RouteStop(stop: _s7, departureMinutes: 735), // Old Town 12:15
-        RouteStop(stop: _s4, departureMinutes: 760), // Market Square 12:40
-        RouteStop(stop: _s3, departureMinutes: 780), // University 13:00
-        RouteStop(stop: _s6, departureMinutes: 800), // Tech Park 13:20
-      ],
-    ),
-    // Bus 11F - Night Connector (outbound)
-    BusRoute(
-      bus: _b6,
-      stops: [
-        RouteStop(stop: _s1, departureMinutes: 1080), // Central Station 18:00
-        RouteStop(stop: _s7, departureMinutes: 1100), // Old Town 18:20
-        RouteStop(stop: _s8, departureMinutes: 1120), // Beach Road 18:40
-        RouteStop(stop: _s2, departureMinutes: 1145), // Airport 19:05
-      ],
-    ),
-    // Bus 11F - Night Connector (return)
-    BusRoute(
-      bus: _b6,
-      stops: [
-        RouteStop(stop: _s2, departureMinutes: 1160), // Airport 19:20
-        RouteStop(stop: _s8, departureMinutes: 1185), // Beach Road 19:45
-        RouteStop(stop: _s7, departureMinutes: 1205), // Old Town 20:05
-        RouteStop(stop: _s1, departureMinutes: 1225), // Central Station 20:25
+        RouteStop(stop: _sPacchanady, departureMinutes: 675),
+        RouteStop(stop: _sPadangady, departureMinutes: 687),
+        RouteStop(stop: _sBondel, departureMinutes: 699),
+        RouteStop(stop: _sKavoor, departureMinutes: 709),
+        RouteStop(stop: _sGovtQuarters, departureMinutes: 719),
+        RouteStop(stop: _sGovtWomensPoly, departureMinutes: 727),
+        RouteStop(stop: _sHudcoColony, departureMinutes: 735),
+        RouteStop(stop: _sKudremukhHousing, departureMinutes: 743),
+        RouteStop(stop: _sKuloor, departureMinutes: 753),
+        RouteStop(stop: _sLadyhill, departureMinutes: 763),
+        RouteStop(stop: _sLalbagh, departureMinutes: 773),
+        RouteStop(stop: _sKsRaoRoad, departureMinutes: 781),
+        RouteStop(stop: _sStateBank, departureMinutes: 789),
       ],
     ),
   ];

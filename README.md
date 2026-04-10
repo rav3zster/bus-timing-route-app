@@ -6,8 +6,8 @@ Smart Bus Timing & Route Assistant built with Flutter.
 
 The app ships with mock data in [lib/data/mock_bus_repository.dart](lib/data/mock_bus_repository.dart) that includes:
 
-- 6 bus services (`42A`, `17B`, `5C`, `88D`, `33E`, `11F`)
-- 8 city stops
+- Real Mangalore route 13-series services (`13`, `13A`, `13B`, `13C`, `13D`)
+- Ordered stop lists for each route variant
 - Outbound and return routes for each service direction
 - Time-ordered stop sequences for each trip
 
