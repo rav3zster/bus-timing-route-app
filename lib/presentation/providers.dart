@@ -6,6 +6,9 @@ import '../domain/search_state.dart';
 import '../domain/time_calculator.dart';
 import 'search_notifier.dart';
 
+/// Current theme index (0–9). Drives the entire app's color scheme.
+final themeIndexProvider = StateProvider<int>((ref) => 0);
+
 final busRepositoryProvider = Provider((_) => MockBusRepository.instance);
 
 final timeCalculatorProvider = Provider((_) => TimeCalculator());

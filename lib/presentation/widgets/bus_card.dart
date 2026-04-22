@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../domain/models.dart';
 import '../../domain/time_calculator.dart';
+import '../app_theme.dart';
 
 class BusCard extends StatelessWidget {
   final BusResult result;
@@ -16,28 +18,32 @@ class BusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final departureTime = timeCalculator.formatDepartureTime(
-      result.departureMinutes,
-    );
-    final arrivalTime = timeCalculator.formatDepartureTime(
+    final c = context.appColors;
+    final dep = timeCalculator.formatDepartureTime(result.departureMinutes);
+    final arr = timeCalculator.formatDepartureTime(
       result.arrivalMinutes ?? result.departureMinutes,
     );
-    final timeRemaining = timeCalculator.formatDuration(
-      result.timeUntilDeparture,
-    );
-    final routeStops = result.routePreview.map((s) => s.name).toList();
+    final remaining = timeCalculator.formatDuration(result.timeUntilDeparture);
+    final stops = result.routePreview.map((s) => s.name).toList();
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+    // Highlighted card: inverted with accent bg
+    final cardBg = isHighlighted ? c.accent : c.surface;
+    final cardText = isHighlighted ? c.accentText : c.text;
+    final cardSub = isHighlighted
+        ? c.accentText.withValues(alpha: 0.6)
+        : c.textSub;
+    final cardDim = isHighlighted
+        ? c.accentText.withValues(alpha: 0.35)
+        : c.textDim;
+    final badgeBg = isHighlighted ? c.accentText.withValues(alpha: 0.15) : c.badge;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
       decoration: BoxDecoration(
-        color: isHighlighted
-            ? const Color(0xFF1E1E1E)
-            : const Color(0xFF141414),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isHighlighted ? Colors.white : const Color(0xFF2A2A2A),
-          width: isHighlighted ? 1.5 : 1,
+        color: cardBg,
+        border: Border(
+          bottom: BorderSide(color: c.border),
         ),
       ),
       child: Padding(
@@ -45,83 +51,65 @@ class BusCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Top row: bus number + badge + time ──────────────────
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Bus number pill
+                // Bus number badge
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
+                    horizontal: 8, vertical: 4,
                   ),
-                  decoration: BoxDecoration(
-                    color: isHighlighted
-                        ? Colors.white
-                        : const Color(0xFF2A2A2A),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
+                  color: badgeBg,
                   child: Text(
                     result.bus.number,
-                    style: TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1,
-                      color: isHighlighted ? Colors.black : Colors.white,
+                    style: GoogleFonts.spaceGrotesk(
+                      fontSize: 12, fontWeight: FontWeight.w700,
+                      letterSpacing: 1, color: cardText,
                     ),
                   ),
                 ),
                 const SizedBox(width: 10),
+
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (isHighlighted)
+                        Text(
+                          '● NEXT',
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 8, fontWeight: FontWeight.w700,
+                            letterSpacing: 2, color: cardDim,
+                          ),
+                        ),
                       Text(
                         result.bus.name,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                        style: GoogleFonts.spaceGrotesk(
+                          fontSize: 14, fontWeight: FontWeight.w600,
+                          color: cardText,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      if (isHighlighted) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          '● NEXT BUS',
-                          style: TextStyle(
-                            fontFamily: 'monospace',
-                            fontSize: 9,
-                            letterSpacing: 2,
-                            color: cs.secondary,
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                 ),
-                // Departure time block
+
+                // Time block
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '$departureTime -> $arrivalTime',
-                      style: const TextStyle(
-                        fontFamily: 'monospace',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        letterSpacing: 1,
+                      '$dep → $arr',
+                      style: GoogleFonts.spaceGrotesk(
+                        fontSize: 14, fontWeight: FontWeight.w700,
+                        color: cardText, letterSpacing: 0.5,
                       ),
                     ),
+                    const SizedBox(height: 2),
                     Text(
-                      'in $timeRemaining',
-                      style: TextStyle(
-                        fontFamily: 'monospace',
-                        fontSize: 10,
-                        color: isHighlighted ? Colors.white : cs.secondary,
-                        letterSpacing: 1,
+                      'in $remaining',
+                      style: GoogleFonts.spaceGrotesk(
+                        fontSize: 10, color: cardSub, letterSpacing: 0.5,
                       ),
                     ),
                   ],
@@ -129,12 +117,10 @@ class BusCard extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 14),
-            Divider(color: cs.outline, height: 1),
             const SizedBox(height: 12),
 
-            // ── Route preview ────────────────────────────────────────
-            _RoutePreview(stops: routeStops),
+            // Route strip
+            _RouteStrip(stops: stops, textColor: cardText, dimColor: cardDim),
           ],
         ),
       ),
@@ -142,58 +128,42 @@ class BusCard extends StatelessWidget {
   }
 }
 
-class _RoutePreview extends StatelessWidget {
+class _RouteStrip extends StatelessWidget {
   final List<String> stops;
-  const _RoutePreview({required this.stops});
+  final Color textColor;
+  final Color dimColor;
+
+  const _RouteStrip({
+    required this.stops,
+    required this.textColor,
+    required this.dimColor,
+  });
 
   @override
   Widget build(BuildContext context) {
     if (stops.isEmpty) return const SizedBox.shrink();
-
-    return Row(
-      children: [
-        Icon(
-          Icons.linear_scale_rounded,
-          size: 14,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                for (int i = 0; i < stops.length; i++) ...[
-                  Text(
-                    stops[i],
-                    style: TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: 11,
-                      color: i == 0 || i == stops.length - 1
-                          ? Colors.white
-                          : const Color(0xFF555555),
-                      fontWeight: i == 0 || i == stops.length - 1
-                          ? FontWeight.w600
-                          : FontWeight.normal,
-                    ),
-                  ),
-                  if (i < stops.length - 1)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Text(
-                        '›',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.outline,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                ],
-              ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          for (int i = 0; i < stops.length; i++) ...[
+            Text(
+              stops[i],
+              style: GoogleFonts.spaceGrotesk(
+                fontSize: 10,
+                fontWeight: i == 0 || i == stops.length - 1
+                    ? FontWeight.w600 : FontWeight.w400,
+                color: i == 0 || i == stops.length - 1 ? textColor : dimColor,
+              ),
             ),
-          ),
-        ),
-      ],
+            if (i < stops.length - 1)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text('·', style: TextStyle(color: dimColor, fontSize: 12)),
+              ),
+          ],
+        ],
+      ),
     );
   }
 }

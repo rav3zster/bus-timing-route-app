@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'app_theme.dart';
 import 'providers.dart';
 
 class BusListScreen extends ConsumerWidget {
@@ -7,20 +9,20 @@ class BusListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final c = context.appColors;
     final buses = ref.read(busRepositoryProvider).getAllBuses();
     final routes = ref.read(busRepositoryProvider).getAllRoutes();
     final calc = ref.read(timeCalculatorProvider);
-    final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: c.bg,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
               child: Row(
                 children: [
                   GestureDetector(
@@ -28,209 +30,221 @@ class BusListScreen extends ConsumerWidget {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        border: Border.all(color: cs.outline),
-                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: c.border),
+                        color: c.surface,
                       ),
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 18,
-                        color: cs.secondary,
-                      ),
+                      child: Icon(Icons.arrow_back, size: 16, color: c.textSub),
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'ALL BUSES',
-                        style: TextStyle(
-                          fontFamily: 'monospace',
-                          fontSize: 11,
-                          letterSpacing: 4,
-                          color: cs.secondary,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'ALL BUSES',
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 10, fontWeight: FontWeight.w500,
+                            letterSpacing: 4, color: c.textSub,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${buses.length} routes',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                        Text(
+                          '${buses.length} routes',
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 18, fontWeight: FontWeight.w700,
+                            color: c.text,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
-            Divider(color: cs.outline, height: 1),
-            const SizedBox(height: 8),
+
+            Container(height: 1, color: c.border),
+
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 24),
                 itemCount: buses.length,
                 itemBuilder: (context, index) {
                   final bus = buses[index];
-                  final busRoutes = routes
-                      .where((r) => r.bus.id == bus.id)
-                      .toList();
+                  final busRoutes =
+                      routes.where((r) => r.bus.id == bus.id).toList();
 
                   return Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 6,
-                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF141414),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFF2A2A2A)),
+                      border: Border(
+                        bottom: BorderSide(color: c.border),
+                      ),
                     ),
                     child: Theme(
-                      data: Theme.of(
-                        context,
-                      ).copyWith(dividerColor: Colors.transparent),
+                      data: Theme.of(context).copyWith(
+                        dividerColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        highlightColor: c.surface,
+                      ),
                       child: ExpansionTile(
                         tilePadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 4,
+                          horizontal: 0, vertical: 8,
                         ),
-                        childrenPadding: const EdgeInsets.fromLTRB(
-                          16,
-                          0,
-                          16,
-                          12,
-                        ),
+                        childrenPadding: const EdgeInsets.only(bottom: 12),
                         leading: Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
+                            horizontal: 8, vertical: 4,
                           ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF2A2A2A),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
+                          color: c.badge,
                           child: Text(
                             bus.number,
-                            style: const TextStyle(
-                              fontFamily: 'monospace',
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              letterSpacing: 1,
+                            style: GoogleFonts.spaceGrotesk(
+                              fontSize: 12, fontWeight: FontWeight.w700,
+                              letterSpacing: 1, color: c.text,
                             ),
                           ),
                         ),
                         title: Text(
                           bus.name,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 13, fontWeight: FontWeight.w600,
+                            color: c.text,
                           ),
                         ),
                         subtitle: Text(
                           '${busRoutes.length} run${busRoutes.length != 1 ? 's' : ''}',
-                          style: TextStyle(
-                            fontFamily: 'monospace',
-                            fontSize: 10,
-                            letterSpacing: 1,
-                            color: cs.secondary,
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 10, letterSpacing: 1, color: c.textSub,
                           ),
                         ),
-                        iconColor: cs.secondary,
-                        collapsedIconColor: cs.secondary,
+                        iconColor: c.textDim,
+                        collapsedIconColor: c.textDim,
                         children: busRoutes.map((route) {
                           final first = route.stops.first;
                           final last = route.stops.last;
+
                           return Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
+                            padding: const EdgeInsets.only(top: 4, bottom: 8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Divider(color: cs.outline, height: 1),
-                                const SizedBox(height: 10),
-                                // Run header: first stop time → last stop time
-                                Row(
-                                  children: [
-                                    Text(
-                                      calc.formatDepartureTime(
-                                        first.departureMinutes,
+                                // Time range
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        calc.formatDepartureTime(
+                                          first.departureMinutes,
+                                        ),
+                                        style: GoogleFonts.spaceGrotesk(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w700,
+                                          color: c.text,
+                                        ),
                                       ),
-                                      style: const TextStyle(
-                                        fontFamily: 'monospace',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                        child: Icon(
+                                          Icons.arrow_forward,
+                                          size: 11, color: c.textDim,
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
+                                      Text(
+                                        calc.formatDepartureTime(
+                                          last.departureMinutes,
+                                        ),
+                                        style: GoogleFonts.spaceGrotesk(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w700,
+                                          color: c.textSub,
+                                        ),
                                       ),
-                                      child: Icon(
-                                        Icons.arrow_forward,
-                                        size: 12,
-                                        color: cs.secondary,
-                                      ),
-                                    ),
-                                    Text(
-                                      calc.formatDepartureTime(
-                                        last.departureMinutes,
-                                      ),
-                                      style: TextStyle(
-                                        fontFamily: 'monospace',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w700,
-                                        color: cs.secondary,
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(height: 8),
-                                // All stops
-                                ...route.stops.map(
-                                  (rs) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 6),
+
+                                // Stop list with timeline
+                                ...route.stops.asMap().entries.map((entry) {
+                                  final i = entry.key;
+                                  final rs = entry.value;
+                                  final isFirst = i == 0;
+                                  final isLast = i == route.stops.length - 1;
+
+                                  return IntrinsicHeight(
                                     child: Row(
                                       children: [
-                                        Container(
-                                          width: 6,
-                                          height: 6,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: cs.secondary,
-                                              width: 1.5,
-                                            ),
+                                        SizedBox(
+                                          width: 16,
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                width: 6, height: 6,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: isFirst || isLast
+                                                      ? c.accent
+                                                      : Colors.transparent,
+                                                  border: Border.all(
+                                                    color: isFirst || isLast
+                                                        ? c.accent
+                                                        : c.border,
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                              ),
+                                              if (!isLast)
+                                                Expanded(
+                                                  child: Container(
+                                                    width: 1,
+                                                    color: c.border,
+                                                  ),
+                                                ),
+                                            ],
                                           ),
                                         ),
                                         const SizedBox(width: 10),
                                         Expanded(
-                                          child: Text(
-                                            rs.stop.name,
-                                            style: const TextStyle(
-                                              fontFamily: 'monospace',
-                                              fontSize: 12,
-                                              color: Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              bottom: 8,
+                                            ),
+                                            child: Text(
+                                              rs.stop.name,
+                                              style: GoogleFonts.spaceGrotesk(
+                                                fontSize: 11,
+                                                fontWeight: isFirst || isLast
+                                                    ? FontWeight.w600
+                                                    : FontWeight.w400,
+                                                color: isFirst || isLast
+                                                    ? c.text
+                                                    : c.textSub,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        Text(
-                                          calc.formatDepartureTime(
-                                            rs.departureMinutes,
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            bottom: 8,
                                           ),
-                                          style: TextStyle(
-                                            fontFamily: 'monospace',
-                                            fontSize: 11,
-                                            color: cs.secondary,
+                                          child: Text(
+                                            calc.formatDepartureTime(
+                                              rs.departureMinutes,
+                                            ),
+                                            style: GoogleFonts.spaceGrotesk(
+                                              fontSize: 10,
+                                              color: isFirst || isLast
+                                                  ? c.text
+                                                  : c.textDim,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ),
+                                  );
+                                }),
                               ],
                             ),
                           );
